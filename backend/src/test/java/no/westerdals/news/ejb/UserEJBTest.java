@@ -21,6 +21,7 @@ public class UserEJBTest extends BaseEJBTest {
         assertNotNull(user.getFirstName());
         assertNotNull(user.getMiddleName());
         assertNotNull(user.getSurname());
+        assertNotNull(user.getRegistrationDate());
     }
 
     @Test
