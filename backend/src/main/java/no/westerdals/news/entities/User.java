@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString(doNotUseGetters = true)
 public class User {
     @Id
     @Pattern(regexp = "[a-zA-Z0-9]{3,25}") // 3 to 25 letters long

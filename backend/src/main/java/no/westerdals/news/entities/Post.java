@@ -12,7 +12,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString(doNotUseGetters = true)
 @Entity
 public class Post {
     @GeneratedValue
