@@ -19,13 +19,13 @@ public class Post {
     @NotNull
     @ManyToOne
     private User author;
+    @NotNull
     @Size(min = 2, max = 1024)
     private String content;
-    @ManyToMany
-    private List<User> upvotes;
-    @ManyToMany
-    private List<User> downvotes;
-    private Date created;
     @OneToMany
+    public List<Vote> votes;
+    private Date created;
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Comment> comments;
+    private Long score;
 }

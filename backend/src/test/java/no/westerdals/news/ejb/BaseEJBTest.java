@@ -12,6 +12,9 @@ public class BaseEJBTest {
     @EJB
     UserEJB userEJB;
 
+    @EJB
+    PostEJB postEJB;
+
     @PersistenceContext
     EntityManager em;
 
