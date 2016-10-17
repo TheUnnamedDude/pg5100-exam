@@ -9,10 +9,23 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(
+                name = Post.GET_ORDERED_BY_TIME,
+                query = "select p from Post as p order by p.created desc"
+        ),
+        @NamedQuery(
+                name = Post.GET_ORDERED_BY_SCORE,
+                query = "select p from Post as p order by p.score desc"
+        )
+})
 @Getter
 @Setter
 @Entity
 public class Post {
+    public static final String GET_ORDERED_BY_TIME = "Post#getOrderedByTime";
+    public static final String GET_ORDERED_BY_SCORE = "Post#getOrderedByScore";
+
     @GeneratedValue
     @Id
     private Long id;

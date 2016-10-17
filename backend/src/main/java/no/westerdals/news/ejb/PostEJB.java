@@ -8,8 +8,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 @Stateless
 @Transactional
@@ -25,6 +27,7 @@ public class PostEJB {
         post.setAuthor(user);
         post.setContent(content);
         post.setCreated(new Date());
+        post.setScore(0L);
         user.getPosts().add(post);
         em.persist(post);
         return post;
@@ -75,6 +78,28 @@ public class PostEJB {
         updateScore(post);
 
         return post;
+    }
+
+    public List<Post> getHighestScoredPosts(int page) {
+        return getHighestScoredPosts(page * 20, 20);
+    }
+
+    public List<Post> getHighestScoredPosts(int start, int results) {
+        TypedQuery<Post> query = em.createNamedQuery(Post.GET_ORDERED_BY_SCORE, Post.class);
+        query.setFirstResult(start);
+        query.setMaxResults(results);
+        return query.getResultList();
+    }
+
+    public List<Post> getNewestPosts(int page) {
+        return getNewestPosts(page * 20, 20);
+    }
+
+    public List<Post> getNewestPosts(int start, int results) {
+        TypedQuery<Post> query = em.createNamedQuery(Post.GET_ORDERED_BY_TIME, Post.class);
+        query.setFirstResult(start);
+        query.setMaxResults(results);
+        return query.getResultList();
     }
 
     public Post findPost(Long postId) {
