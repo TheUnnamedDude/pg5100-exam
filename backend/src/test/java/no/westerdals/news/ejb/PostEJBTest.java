@@ -72,8 +72,8 @@ public class PostEJBTest extends BaseEJBTest {
         em.clear();
 
         Post fullyResolvedPost = postEJB.resolveFullPost(post.getId());
-        assertEquals(fullyResolvedPost.getVotes().size(), 2);
-        assertEquals(fullyResolvedPost.getScore().longValue(), 2);
+        assertEquals(2, fullyResolvedPost.getVotes().size());
+        assertEquals(2, fullyResolvedPost.getScore().longValue());
     }
 
     @Test
@@ -90,8 +90,8 @@ public class PostEJBTest extends BaseEJBTest {
         em.clear();
 
         Post fullyResolvedPost = postEJB.resolveFullPost(post.getId());
-        assertEquals(fullyResolvedPost.getVotes().size(), 2);
-        assertEquals(fullyResolvedPost.getScore().longValue(), -2);
+        assertEquals(2, fullyResolvedPost.getVotes().size());
+        assertEquals(-2, fullyResolvedPost.getScore().longValue());
     }
 
     @Test
@@ -101,13 +101,16 @@ public class PostEJBTest extends BaseEJBTest {
         User upvoter2 = userEJB.createUser("TestRemoveVote3", "Firstname", null, "Surname", "password");
 
         Post post = postEJB.createPost(user.getUserId(), "Quality content");
+        
+        postEJB.upvote(post.getId(), upvoter1.getUserId());
+        postEJB.upvote(post.getId(), upvoter2.getUserId());
 
         postEJB.resetVote(post.getId(), upvoter2.getUserId());
 
         em.clear();
 
         Post fullyResolvedPost = postEJB.resolveFullPost(post.getId());
-        assertEquals(fullyResolvedPost.getVotes().size(), 1);
-        assertEquals(fullyResolvedPost.getScore().longValue(), 1);
+        assertEquals(1, fullyResolvedPost.getVotes().size());
+        assertEquals(1, fullyResolvedPost.getScore().longValue());
     }
 }

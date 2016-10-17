@@ -31,13 +31,13 @@ public class PostEJB {
     }
 
     public Post changeVote(Long postId, String userId, boolean upvote) {
-        Post post = em.find(Post.class, postId);
+        Post post = findPost(postId);
 
         if (post.getId() == null) {
             throw new IllegalArgumentException("Post not found.");
         }
 
-        User user = em.find(User.class, userId);
+        User user = userEJB.findUser(userId);
         if (user == null) {
             throw new IllegalArgumentException("Username not found.");
         }
@@ -47,7 +47,7 @@ public class PostEJB {
         vote.setUpvote(upvote);
         vote.setUser(user);
         post.getVotes().add(vote);
-        post.setScore(post.getVotes().stream().mapToLong(v -> v.isUpvote() ? 1 : -1).sum());
+        updateScore(post);
         em.persist(vote);
         return post;
     }
@@ -66,7 +66,13 @@ public class PostEJB {
             throw new IllegalArgumentException("Could not find post.");
         }
 
-        post.getVotes().removeIf(vote -> vote.getUser().getUserId().equals(userId));
+        User user = userEJB.findUser(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("Could not find user.");
+        }
+
+        post.getVotes().removeIf(vote -> vote.getUser().getUserId().equals(user.getUserId()));
+        updateScore(post);
 
         return post;
     }
@@ -79,6 +85,10 @@ public class PostEJB {
         Post post = findPost(postId);
         traversePost(post);
         return post;
+    }
+
+    public void updateScore(Post post) {
+        post.setScore(post.getVotes().stream().mapToLong(v -> v.isUpvote() ? 1 : -1).sum());
     }
 
     public void traversePost(Post post) {
