@@ -17,31 +17,74 @@
     <div class="question">
         <h3>1) Explain the main differences between JPQL and SQL, and why one might rather want to use
             JPQL when developing JEE programs.</h3>
-        <p>Answer</p>
+        <p>
+            JPQL is a abstract language which provides ways to map a relation database to objects in java.
+            Since its abstract and you don't write raw SQL code and your implementation will work with other
+            database providers, this is nice if you want to use h2 for testing and mysql or postgres SQL for
+            production. It can also make the code more maintainable as you just define the entities and JPQL
+            queries so you don't really have to think about the relations.
+        </p>
     </div>
     <br />
     <div class="question">
         <h3>2) In the context of JPA, explain the main differences between a "pessimistic" and an "optimistic"
-            lock, and when one might choose to use one of them instead of the other.  </h3>
-        <p>Answer</p>
+            lock, and when one might choose to use one of them instead of the other.</h3>
+        <p>
+            A pessimistic lock locks a resource every time its queried or updated, this can be a slow approach
+            as locking is a slow operation. If what you're trying to update is updated a lot and there is few
+            collisions, a optimistic lock is often the faster alternative, instead of locking it each time its
+            updated it rather checks if there was a collision and if there was one it will roll back the
+            transaction and try again, this approach will be slower if there is a lot of collisions.
+        </p>
     </div>
     <br />
     <div class="question">
         <h3>3) In the context of EJB, explain what "Dependency Injection" is, how it works, and why it is
             useful.</h3>
-        <p>Answer</p>
+        <p>
+            Dependency injection is injecting objects into a class during runtime. In programs you often want
+            to depend on different objects to do different things, in a normal program without dependency
+            injections you usually have to either pass a dependency to the object in a constructor or pass it
+            to the method you're calling, this can be very cumbersome in big projects. Dependency injections
+            works by annotating a field in a class with @EJB or @Autowired(in spring) and when the application
+            server initializes the EJB's it uses reflections to read through the class and look for the @EJB
+            annotations, if it finds a annotation it tries to find a EJB that fits the class and uses
+            reflections to inject it. This is very useful in bigger projects as you might not know what
+            dependencies you need when you set up a new class or you might need another dependency later on,
+            if you don't use dependency injections you will then have to go through the entire project and
+            change methods and constructors(obviously the compiler will tell you its missing) and add a
+            parameter to the constructor or method call.
+        </p>
     </div>
     <br />
     <div class="question">
         <h3>4) In the context of EJB, explain the concept of “Proxy class”, how it works, and why it is useful.</h3>
-        <p>Answer</p>
+        <p>
+            A proxy class wraps a class and adds functionality to it. It works by creating a class that implements
+            all the methods, then they create a call to the original object with code that helps you deal with
+            common things like transactions. A normal use case in EJB will be to create transactions, commit and
+            roll them back on errors. A proxy class will help you reducing duplicate code and you don't have to
+            think about transactions when writing the EJB code.
+        </p>
     </div>
     <br />
     <div class="question">
         <h3>5) In the context of JSF, explain the differences and relation between the XHTML files in the
             "webapp" folder and the actual HTML files rendered on the browser when one accesses those files
             via a JSF servlet.</h3>
-        <p>Answer</p>
+        <p>
+            A browser can only render a HTML file and not magically get information from the server without using
+            javascript, so if you create a normal HTML file it will be static and there would be no way of
+            updating its contents, this is fine for simple applications like a website with information about a
+            company but if you want a website users can interact with and update contents you will have to do
+            something else, this is what JSF does. JSF is a way to dynamically create html from a template or
+            "facet", the facets can have simple logic that makes it possible to dynamically load content from
+            a database or from java logic. After a http request to /home.jsf the webserver will look for a facet
+            in a pre-configured folder(in this case main/webapp/home.xhtml) and parse its content, it will look
+            for special tags and expressions, then replace them with generated html code based on the previous
+            information while ignoring the pure html code. When this is done it will have generated a document
+            with pure html code that can be displayed by the browser.
+        </p>
     </div>
     <br />
     <div class="question">
@@ -49,7 +92,40 @@
             done in class (eg., what needs to be configured, which Maven phases are involved,  why the tests
             have to be written as integration instead of unit tests, how to automatically get and install a JEE
             container, etc).</h3>
-        <p>Answer</p>
+        <p>
+            Normal tests are supposed to test the logic while a integration test is supposed to test how
+            external systems(like a web browser) is interacting with the application.
+        </p>
+        <h4>The maven phases involved with the integration tests is:</h4>
+        <ul>
+            <li>pre-integration-test: used for setting up the test environment(starting wildfly)</li>
+            <li>integration-test: this runs the integration tests</li>
+            <li>post-integration-test: makes sure everything is torn down(shutting down wildfly)</li>
+            <li>verify: checks the results of the tests, this is also a nice maven phase to use when running
+            the integration tests as it runs all of the previous goals</li>
+        </ul>
+        <h4>The steps to set up selenium testing:</h4>
+        <ol>
+            <li>Install the appropriate driver for your browser and operating system</li>
+            <li>Set up the required dependencies to run a Selenium test groupId: org.seleniumhq.selenium
+                and artifactId: selenium-java.</li>
+            <li>Add the wildfly plugin and configure it to use a set username and password.</li>
+            <li>Add the failsafe plugin so you can run the integration tests</li>
+            <li>Make sure the dependency plugin downloads the wildfly zip and uncompresses it so it can be
+            automatically started during the integration tests.</li>
+            <li>Create code that finds the driver binary and initializes a WebDriver, preferably not in the
+            main integration test class, the integration test class should probably rather extend a base for
+            doing selenium tests.</li>
+            <li>Create a java class in the test folder suffixed by IT, example WebPageIT.java.</li>
+            <li>Create PageObjects that wraps the selenium code so you don't have selenium logic in the test.</li>
+            <li>Add a @Before annotated method that makes sure the webserver is running when you start the
+            integration tests.</li>
+        </ol>
+        <p>
+            There is a one thing you should be aware of when running a integration test, of a testcase ends
+            with a exception you might not get to the post-integration-test goal and end up with wildfly still
+            running in the background
+        </p>
     </div>
 </h:body>
 
