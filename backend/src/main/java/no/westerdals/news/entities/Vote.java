@@ -13,7 +13,7 @@ public class Vote {
     @GeneratedValue
     @Id
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @NotNull
     private User user;
     private boolean upvote;

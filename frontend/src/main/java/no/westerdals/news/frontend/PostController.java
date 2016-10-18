@@ -12,7 +12,6 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequestScoped
 @Named
@@ -24,8 +23,17 @@ public class PostController {
     @Getter
     private String newPostContent;
 
-    public List<Post> getTopPosts() {
-        List<Post> posts = postEJB.getHighestScoredPosts(0);
+    @Getter
+    @Setter
+    private boolean orderByDate = false;
+
+    public List<Post> getPosts() {
+        List<Post> posts;
+        if (orderByDate) {
+            posts = postEJB.getNewestPosts(0);
+        } else {
+            posts = postEJB.getHighestScoredPosts(0);
+        }
         HttpSession session = SessionHelper.getSession(false);
         if (session != null) {
             String userId = (String) session.getAttribute("userId");
@@ -67,5 +75,15 @@ public class PostController {
             postEJB.resetVote(post.getId(), userId);
         }
         return "index.jsf";
+    }
+
+    public String refresh() {
+        return "index.jsf";
+    }
+
+    public String cropForFrontpage(String in) {
+        if (in.length() <= 30)
+            return in;
+        return in.substring(0, 26) + "...";
     }
 }

@@ -40,6 +40,7 @@ public class UserEJB {
         user.setHashedPassword(hashedPassword);
         user.setRegistrationDate(new Date());
         user.setSalt(Base64.getEncoder().encodeToString(salt));
+        user.setKarmaPoints(0L);
 
         em.persist(user);
 

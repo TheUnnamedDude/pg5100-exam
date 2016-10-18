@@ -10,12 +10,58 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets">
-
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
 <ui:composition template="layout.xhtml">
+    <ui:define name="head">
+        <f:metadata>
+            <f:viewParam name="userId" value="${userController.lookupUserId}"/>
+        </f:metadata>
+    </ui:define>
     <ui:define name="title">#{authenticationController.user.userId}</ui:define>
-    <ui:define name="title">
+    <ui:define name="head">
+        <style type="text/css">
+            .user-detail-key {
+                font-weight: bold;
+            }
+        </style>
+    </ui:define>
+    <ui:define name="header">
         <h2>User info for: #{authenticationController.user.userId}</h2>
+    </ui:define>
+    <ui:define name="content">
+        <c:choose>
+            <c:when test="#{userController.userDetails != null}">
+                <div id="user-details">
+                    <div id="user-id">
+                        <span class="user-detail-key">Id:</span> <span id="user-id-value">#{userController.userDetails.userId}</span>
+                    </div>
+                    <div id="user-first-name">
+                        <span class="user-detail-key">First name:</span> <span id="user-first-name-value">#{userController.userDetails.userId}</span>
+                    </div>
+                    <c:if test="#{userController.userDetails.middleName != null}">
+                        <div id="user-middle-name">
+                            <span class="user-detail-key">Middle name:</span> <span id="user-middle-name-value">#{userController.userDetails.middleName}</span>
+                        </div>
+                    </c:if>
+                    <div id="user-surname">
+                        <span class="user-detail-key">Surname:</span> <span id="user-surname-value">#{userController.userDetails.surname}</span>
+                    </div>
+                    <div id="user-registration-date">
+                        <span class="user-detail-key">Registration date:</span>
+                        <span id="user-registration-date-value">
+                            #{userController.userDetails.registrationDate}
+                        </span>
+                    </div>
+                    <div id="user-karma">
+                        <span class="user-detail-key">Karma:</span> <span id="user-karma-value">#{userController.userDetails.karmaPoints}</span>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <h3 style="color: red">User not found</h3>
+            </c:otherwise>
+        </c:choose>
     </ui:define>
 </ui:composition>
 

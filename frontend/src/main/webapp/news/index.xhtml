@@ -17,6 +17,15 @@
 <h:body>
     <ui:composition template="layout.xhtml">
         <ui:define name="title">News</ui:define>
+        <ui:define name="head">
+            <style type="text/css">
+                .post-header div {
+                    display: inline-block;
+                    float: left;
+                    margin: 5px;
+                }
+            </style>
+        </ui:define>
         <ui:define name="header">
             <h2>News Home Page</h2>
         </ui:define>
@@ -30,31 +39,54 @@
             </c:if>
             <div id="news-container">
                 <h3 id="news-header">News</h3>
-
-                <c:set var="posts" value="#{postController.topPosts}" />
+                <br />
+                <h:form>
+                    <h:selectOneMenu value="#{postController.orderByDate}">
+                        <f:selectItem itemValue="true" itemLabel="Date" />
+                        <f:selectItem itemValue="false" itemLabel="Votes" />
+                    </h:selectOneMenu>
+                    <h:commandButton action="#{postController.refresh()}" value="Update results" />
+                </h:form>
                 <c:choose>
-                    <c:when test="${empty posts}">
+                    <c:when test="${empty postController.posts}">
                         No News Yet :( Be the first to create one!
                     </c:when>
                     <c:otherwise>
-                        <div id="posts">
-                            <ui:repeat value="#{postController.topPosts}" var="post">
-                                <div class="post" id="post-${post.id}">
-                                    <div class="votes">Score: <span class="score" id="score-${post.id}">${post.score}</span></div>
-                                    <p class="content">
-                                        ${post.content}
-                                    </p>
-                                    <h:form>
-                                        <h:selectOneRadio id="vote-selector-${post.id}" value="${post.selfVote}">
-                                            <f:selectItem itemValue="-1" itemLabel="Downvote" />
-                                            <f:selectItem itemValue="0" itemLabel="No vote" />
-                                            <f:selectItem itemValue="1" itemLabel="Upvote" />
-                                            <f:ajax execute="@form" listener="#{postController.changeVote(post)}" render="score-${post.id}" />
-                                        </h:selectOneRadio>
-                                        <noscript> <!-- Lets be nice to noscript users -->
-                                            <h:commandButton action="#{postController.changeVote(post)}" />
-                                        </noscript>
-                                    </h:form>
+                        <div id="posts" style="border: 1px black solid">
+                            <ui:repeat value="#{postController.posts}" var="post">
+                                <div style="border: 1px black solid; margin: 5px; display: inline-block;" class="post" id="post-${post.id}">
+                                    <div class="post-header" style="border-bottom: 1px solid gray">
+                                        <div class="votes">
+                                            Score: <span class="score" id="score-${post.id}">${post.score}</span>
+                                        </div>
+                                        <div class="published-date">
+                                            Date: <span class="published-date-value" id="published-date-${post.id}">${post.created}</span>
+                                        </div>
+                                        <div class="author">
+                                            Author:
+                                            <h:link class="author-value" id="author-${post.id}" outcome="user_details.jsf" value="${post.author.userId}">
+                                                <f:param name="userId" value="${post.author.userId}" />
+                                            </h:link>
+                                        </div>
+                                        <div class="post-cropped-content">
+                                            Content: ${postController.cropForFrontpage(post.content)}
+                                        </div>
+                                        <c:if test="#{authenticationController.user != null}">
+                                            <div class="vote-selector">
+                                                <h:form>
+                                                    <h:selectOneRadio id="vote-selector-${post.id}" value="${post.selfVote}">
+                                                        <f:selectItem itemValue="-1" itemLabel="Downvote" />
+                                                        <f:selectItem itemValue="0" itemLabel="No vote" />
+                                                        <f:selectItem itemValue="1" itemLabel="Upvote" />
+                                                        <f:ajax execute="@form" listener="#{postController.changeVote(post)}" render="score-${post.id}" />
+                                                    </h:selectOneRadio>
+                                                    <noscript> <!-- Lets be nice to noscript users -->
+                                                        <h:commandButton action="#{postController.changeVote(post)}" />
+                                                    </noscript>
+                                                </h:form>
+                                            </div>
+                                        </c:if>
+                                    </div>
                                 </div>
                                 <br />
                             </ui:repeat>
