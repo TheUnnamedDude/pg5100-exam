@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: kevin
+  Date: 10/18/16
+  Time: 4:49 AM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="layout.xhtml">
+    <ui:define name="title">Log in</ui:define>
+    <ui:define name="header">
+        <h2>Log in</h2>
+    </ui:define>
+    <ui:define name="content">
+        <h:form>
+            <h:outputLabel value="Username" />
+            <br />
+            <h:inputText value="#{authenticationController.loginUserId}" p:placeholder="Username" />
+            <br />
+            <h:outputLabel value="Password" />
+            <br />
+            <h:inputSecret value="#{authenticationController.loginPassword}" />
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</html>

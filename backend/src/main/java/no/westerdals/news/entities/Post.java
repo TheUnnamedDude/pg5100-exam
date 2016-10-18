@@ -18,7 +18,7 @@ import java.util.List;
         @NamedQuery(
                 name = Post.GET_ORDERED_BY_SCORE,
                 query = "select p from Post as p order by p.score desc"
-        )
+        ),
 })
 @Getter
 @Setter
@@ -26,6 +26,7 @@ import java.util.List;
 public class Post {
     public static final String GET_ORDERED_BY_TIME = "Post#getOrderedByTime";
     public static final String GET_ORDERED_BY_SCORE = "Post#getOrderedByScore";
+    public static final String GET_POSTS = "Post#getPosts";
 
     @Setter(AccessLevel.NONE)
     @GeneratedValue

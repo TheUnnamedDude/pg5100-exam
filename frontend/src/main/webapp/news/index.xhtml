@@ -10,14 +10,30 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
-
-<h:head>
-    <title>News</title>
-</h:head>
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:body>
-    
+    <ui:composition template="layout.xhtml">
+        <ui:define name="title">News</ui:define>
+        <ui:define name="header">
+            <h2>News Home Page</h2>
+        </ui:define>
+        <ui:define name="content">
+            <div id="news-container">
+                <h3 id="news-header">News</h3>
+                <c:set var="posts" value="#{postController.topPosts}" />
+                <c:choose>
+                    <c:when test="${empty posts}">
+                        No News Yet :( Be the first to create one!
+                    </c:when>
+                    <c:otherwise>
+                        <!-- TODO: List posts -->
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </ui:define>
+    </ui:composition>
 </h:body>
 
 </html>
