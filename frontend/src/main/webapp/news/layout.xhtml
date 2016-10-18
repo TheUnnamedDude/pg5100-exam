@@ -20,13 +20,16 @@
         <h2>Default header</h2>
     </ui:insert>
     <ui:insert name="user-info">
-        <c:set var="user" value="#{authenticationController.user}" />
         <c:choose>
-            <c:when test="#{user == null}">
-                <h:link outcome="login.jsf"><input type="button" value="Log in" /></h:link>
+            <c:when test="#{authenticationController.user == null}">
+                <h:link outcome="login.jsf"><input id="login-button" type="button" value="Log in" /></h:link>
             </c:when>
             <c:otherwise>
-                Hi ${user.userId}!
+                Hi #{authenticationController.user.userId}!
+                <br />
+                <h:form>
+                    <h:commandButton id="logout-button" action="#{authenticationController.invalidate()}" value="Log out" />
+                </h:form>
             </c:otherwise>
         </c:choose>
     </ui:insert>

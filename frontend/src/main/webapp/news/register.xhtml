@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: kevin
+  Date: 10/18/16
+  Time: 4:02 PM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="layout.xhtml">
+    <ui:define name="title">Register a new user</ui:define>
+    <ui:define name="title"><h2>Register a new user</h2></ui:define>
+    <ui:define name="content">
+        <h:form>
+            <h:outputLabel value="Username" />
+            <br />
+            <h:inputText id="username" value="#{authenticationController.registerUsername}" p:placeholder="Username" />
+            <br />
+            <h:outputLabel value="Password" />
+            <br />
+            <h:inputSecret id="password" value="#{authenticationController.registerPassword}" />
+            <br />
+            <h:outputLabel value="Confirm password" />
+            <br />
+            <h:inputSecret id="confirm-password" value="#{authenticationController.registerPasswordConfirmation}" />
+            <br />
+            <h:outputLabel value="First name" />
+            <br />
+            <h:inputText id="first-name" value="#{authenticationController.registerFirstName}" p:placeholder="First name" />
+            <br />
+            <h:outputLabel value="Middle name" />
+            <br />
+            <h:inputText id="middle-name" value="#{authenticationController.registerMiddleName}" p:placeholder="Middle name" />
+            <br />
+            <h:outputLabel value="Username" />
+            <br />
+            <h:inputText id="surname" value="#{authenticationController.registerSurname}" p:placeholder="Surname" />
+            <br />
+            <h:commandButton value="Register" action="#{authenticationController.registerUser()}" />
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+</html>

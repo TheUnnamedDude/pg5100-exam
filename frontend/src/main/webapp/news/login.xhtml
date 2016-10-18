@@ -27,6 +27,11 @@
             <h:outputLabel value="Password" />
             <br />
             <h:inputSecret value="#{authenticationController.loginPassword}" />
+            <br />
+            <h:commandButton value="Log in" action="#{authenticationController.authenticate()}" />
+            <br />
+            <h:link outcome="index.jsf"><input type="button" value="Cancel" /></h:link>
+            <h:link outcome="register.jsf"><input type="button" value="Register" /></h:link>
         </h:form>
     </ui:define>
 </ui:composition>

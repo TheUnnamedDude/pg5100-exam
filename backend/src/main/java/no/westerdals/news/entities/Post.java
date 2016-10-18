@@ -38,10 +38,12 @@ public class Post {
     @NotNull
     @Size(min = 2, max = 1024)
     private String content;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     public List<Vote> votes;
     private Date created;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     private List<Comment> comments;
     private Long score;
+    @Transient
+    private Long selfVote;
 }

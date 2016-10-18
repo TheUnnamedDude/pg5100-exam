@@ -122,6 +122,5 @@ public class PostEJB {
 
     public void traversePost(Post post) {
         post.getComments().forEach(this::traversePost);
-        post.getVotes().size(); // Resolve the size of the votes
     }
 }
