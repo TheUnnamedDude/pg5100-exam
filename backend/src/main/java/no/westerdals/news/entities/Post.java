@@ -1,5 +1,6 @@
 package no.westerdals.news.entities;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,7 @@ public class Post {
     public static final String GET_ORDERED_BY_TIME = "Post#getOrderedByTime";
     public static final String GET_ORDERED_BY_SCORE = "Post#getOrderedByScore";
 
+    @Setter(AccessLevel.NONE)
     @GeneratedValue
     @Id
     private Long id;

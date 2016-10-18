@@ -1,5 +1,6 @@
 package no.westerdals.news.ejb;
 
+import no.westerdals.news.entities.Comment;
 import no.westerdals.news.entities.Post;
 import no.westerdals.news.entities.User;
 import no.westerdals.news.entities.Vote;
@@ -35,11 +36,6 @@ public class PostEJB {
 
     public Post changeVote(Long postId, String userId, boolean upvote) {
         Post post = findPost(postId);
-
-        if (post.getId() == null) {
-            throw new IllegalArgumentException("Post not found.");
-        }
-
         User user = userEJB.findUser(userId);
         if (user == null) {
             throw new IllegalArgumentException("Username not found.");
@@ -65,10 +61,6 @@ public class PostEJB {
 
     public Post resetVote(Long postId, String userId) {
         Post post = findPost(postId);
-        if (post == null) {
-            throw new IllegalArgumentException("Could not find post.");
-        }
-
         User user = userEJB.findUser(userId);
         if (user == null) {
             throw new IllegalArgumentException("Could not find user.");
@@ -114,6 +106,18 @@ public class PostEJB {
 
     public void updateScore(Post post) {
         post.setScore(post.getVotes().stream().mapToLong(v -> v.isUpvote() ? 1 : -1).sum());
+        long karma = 0;
+        for (Post p : post.getAuthor().getPosts()) {
+            if (p instanceof Comment) {
+                Comment comment = (Comment) p;
+                if (comment.isModerated()) {
+                    karma -= 10;
+                    continue;
+                }
+            }
+            karma += p.getScore();
+        }
+        post.getAuthor().setKarmaPoints(karma);
     }
 
     public void traversePost(Post post) {

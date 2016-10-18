@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 @Transactional
 @Stateless
@@ -45,8 +46,20 @@ public class UserEJB {
         return user;
     }
 
+    /**
+     * Find a user by its name, returns null if none is found
+     * @param username the name to look for
+     * @return a user or if none were found null
+     */
     public User findUser(String username) {
-        return em.find(User.class, username);
+        List<User> user =  em.createNamedQuery(User.GET_BY_USERNAME, User.class)
+                .setParameter("userId", username)
+                .setMaxResults(1)
+                .getResultList();
+        if (user.isEmpty()) {
+            return null;
+        }
+        return user.get(0);
     }
 
     public User validatePassword(String username, String password) {
