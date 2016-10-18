@@ -15,9 +15,9 @@
 
 <ui:composition template="layout.xhtml">
     <ui:define name="title">Register a new user</ui:define>
-    <ui:define name="title"><h2>Register a new user</h2></ui:define>
+    <ui:define name="header"><h2>Register a new user</h2></ui:define>
     <ui:define name="content">
-        <h:form>
+        <h:form id="register-user-form">
             <h:outputLabel value="Username" />
             <br />
             <h:inputText id="username" value="#{authenticationController.registerUsername}" p:placeholder="Username" />
@@ -42,7 +42,7 @@
             <br />
             <h:inputText id="surname" value="#{authenticationController.registerSurname}" p:placeholder="Surname" />
             <br />
-            <h:commandButton value="Register" action="#{authenticationController.registerUser()}" />
+            <h:commandButton id="register-button" value="Register" action="#{authenticationController.registerUser()}" />
         </h:form>
     </ui:define>
 </ui:composition>

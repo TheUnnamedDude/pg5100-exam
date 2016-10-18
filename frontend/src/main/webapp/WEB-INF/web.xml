@@ -6,7 +6,7 @@
     <display-name>Reddit clone</display-name>
 
     <welcome-file-list>
-        <welcome-file>home.jsf</welcome-file>
+        <welcome-file>index.jsf</welcome-file>
     </welcome-file-list>
 
     <servlet>

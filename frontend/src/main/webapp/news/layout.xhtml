@@ -28,7 +28,7 @@
             <c:otherwise>
                 Hi #{authenticationController.user.userId}!
                 <br />
-                <h:form>
+                <h:form id="logout-form">
                     <h:commandButton id="logout-button" action="#{authenticationController.invalidate()}" value="Log out" />
                 </h:form>
             </c:otherwise>

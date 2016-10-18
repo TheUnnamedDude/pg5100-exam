@@ -69,7 +69,7 @@
                                             </h:link>
                                         </div>
                                         <div class="post-cropped-content">
-                                            Content: ${postController.cropForFrontpage(post.content)}
+                                            Content: <span class="content-value">${postController.cropForFrontpage(post.content)}</span>
                                         </div>
                                         <c:if test="#{authenticationController.user != null}">
                                             <div class="vote-selector">

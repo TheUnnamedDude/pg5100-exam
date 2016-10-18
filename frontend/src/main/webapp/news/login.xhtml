@@ -19,7 +19,7 @@
         <h2>Log in</h2>
     </ui:define>
     <ui:define name="content">
-        <h:form>
+        <h:form id="login-form">
             <h:outputLabel value="Username" />
             <br />
             <h:inputText value="#{authenticationController.loginUserId}" p:placeholder="Username" />
@@ -30,9 +30,9 @@
             <br />
             <h:commandButton value="Log in" action="#{authenticationController.authenticate()}" />
             <br />
-            <h:link outcome="index.jsf"><input type="button" value="Cancel" /></h:link>
-            <h:link outcome="register.jsf"><input type="button" value="Register" /></h:link>
         </h:form>
+        <h:link id="cancel-login-button" outcome="index.jsf"><input type="button" value="Cancel" /></h:link>
+        <h:link id="register-new-user-button" outcome="register.jsf"><input type="button" value="Register" /></h:link>
     </ui:define>
 </ui:composition>
 
