@@ -73,7 +73,7 @@
                                         </div>
                                         <c:if test="#{authenticationController.user != null}">
                                             <div class="vote-selector">
-                                                <h:form>
+                                                <h:form class="vote-selector-form">
                                                     <h:selectOneRadio id="vote-selector-${post.id}" value="${post.selfVote}">
                                                         <f:selectItem itemValue="-1" itemLabel="Downvote" />
                                                         <f:selectItem itemValue="0" itemLabel="No vote" />

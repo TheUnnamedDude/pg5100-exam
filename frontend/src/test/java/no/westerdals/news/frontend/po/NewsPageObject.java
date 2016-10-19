@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class NewsPageObject extends BasePageObject {
 
@@ -53,11 +54,52 @@ public class NewsPageObject extends BasePageObject {
                 .count();
     }
 
-    public long getNumberOfArticleWithContent(String expectedContent) {
+    private Stream<WebElement> getArticlesWithContent(String expectedContent) {
         return driver.findElements(By.className("post"))
                 .stream()
-                .map(e -> e.findElement(By.className("content-value")))
-                .filter(postContent -> postContent.getText().equals(expectedContent))
+                .filter(post -> post
+                        .findElement(By.className("content-value"))
+                        .getText().equals(expectedContent));
+    }
+
+    public long getNumberOfArticleWithContent(String expectedContent) {
+        return getArticlesWithContent(expectedContent)
                 .count();
+    }
+
+    public UserDetailsPageObject clickAuthorForPostWithContent(String expectedContent, String expectedUsername) {
+        getArticlesWithContent(expectedContent)
+                .findAny()
+                .orElse(null) // We'll get a NPE and a failed test if it cant find the element, which is fine
+                .findElement(By.className("author"))
+                .click();
+        waitForPageToLoad();
+        return new UserDetailsPageObject(driver, expectedUsername);
+    }
+
+    public void clickUpvoteForPostWithContent(String expectedContent) {
+        getArticlesWithContent(expectedContent)
+                .findAny()
+                .orElse(null)
+                .findElement(By.className("vote-selector"))
+                .findElements(By.tagName("label"))
+                .stream()
+                .filter(element -> element.getText().equals("Upvote"))
+                .findAny()
+                .orElse(null)
+                .click();
+        waitForPageToLoad();
+    }
+
+    public int getUpvotesForPostWithContent(String expectedContent) {
+        return Integer.parseInt(getArticlesWithContent(expectedContent)
+                .findAny()
+                .orElse(null)
+                .findElement(By.className("score"))
+                .getText());
+    }
+
+    public boolean canUpvotePosts() {
+        return !driver.findElements(By.className("vote-selector")).isEmpty();
     }
 }

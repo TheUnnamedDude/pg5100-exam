@@ -22,13 +22,13 @@
         <h:form id="login-form">
             <h:outputLabel value="Username" />
             <br />
-            <h:inputText value="#{authenticationController.loginUserId}" p:placeholder="Username" />
+            <h:inputText id="username" value="#{authenticationController.loginUserId}" p:placeholder="Username" />
             <br />
             <h:outputLabel value="Password" />
             <br />
-            <h:inputSecret value="#{authenticationController.loginPassword}" />
+            <h:inputSecret id="password" value="#{authenticationController.loginPassword}" />
             <br />
-            <h:commandButton value="Log in" action="#{authenticationController.authenticate()}" />
+            <h:commandButton id="login-button" value="Log in" action="#{authenticationController.authenticate()}" />
             <br />
         </h:form>
         <h:link id="cancel-login-button" outcome="index.jsf"><input type="button" value="Cancel" /></h:link>

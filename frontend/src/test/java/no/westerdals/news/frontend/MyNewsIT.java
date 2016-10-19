@@ -3,6 +3,7 @@ package no.westerdals.news.frontend;
 import no.westerdals.news.frontend.po.LoginPageObject;
 import no.westerdals.news.frontend.po.NewsPageObject;
 import no.westerdals.news.frontend.po.RegisterNewUserPageObject;
+import no.westerdals.news.frontend.po.UserDetailsPageObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -75,5 +76,49 @@ public class MyNewsIT extends WebIntegrationTestBase {
 
         assertTrue(newsPage.getNumberOfArticleWithContent(postContent1) > 0);
         assertTrue(newsPage.getNumberOfArticleWithContent(postContent2) > 0);
+    }
+
+    @Test
+    public void testUserDetails() throws Exception {
+        String postContent = "Testing user details";
+        String author = "UserDetails";
+        navigateAndCreateUser(author);
+
+        newsPage.writePostContent(postContent);
+        newsPage.clickCreatePost();
+
+        UserDetailsPageObject userDetails = newsPage.clickAuthorForPostWithContent(postContent, author);
+
+        assertTrue(userDetails.isOnPage());
+    }
+
+    @Test
+    public void testCanVote() throws Exception {
+        String postContent = "Can someone upvote this?";
+        String author = "CanVote";
+        navigateAndCreateUser(author);
+
+        newsPage.writePostContent(postContent);
+        newsPage.clickCreatePost();
+
+        assertTrue(newsPage.canUpvotePosts());
+        newsPage.clickUpvoteForPostWithContent(postContent);
+
+        // Didnt really manage to create a good way of refreshing the page after upvoting, so I'm refreshing
+        // the page for this test
+        newsPage.navigateToNewspage();
+        assertEquals(1, newsPage.getUpvotesForPostWithContent(postContent));
+
+        newsPage.logout();
+
+        assertFalse(newsPage.isLoggedIn());
+
+        assertFalse(newsPage.canUpvotePosts());
+
+        LoginPageObject loginPage = newsPage.navigateToLogin();
+        loginPage.enterCredentials(author, "password");
+        loginPage.clickLogin();
+
+        assertTrue(newsPage.canUpvotePosts());
     }
 }
