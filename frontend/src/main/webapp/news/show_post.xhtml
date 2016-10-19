@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="layout.xhtml">
+    <ui:define name="head">
+        <f:metadata>
+            <f:viewParam  name="postId" value="#{postController.displayedPostId}" />
+        </f:metadata>
+    </ui:define>
+    <ui:define name="title">Show post</ui:define>
+    <ui:define name="header">
+        <h2>News</h2>
+    </ui:define>
+    <ui:define name="content">
+        <p>On the #{postController.post.created} the user #{postController.post.author.userId} wrote: ${postController.post.content}</p>
+        <hr />
+        <h:form id="create-comment-form">
+            <h:inputTextarea id="content" value="#{postController.newPostContent}" p:placeholder="What do you want to share?" />
+            <br />
+            <h:commandButton id="create" value="Create post" action="#{postController.createComment()}">
+                <f:param name="postId" value="#{postController.post.id}" />
+            </h:commandButton>
+        </h:form>
+        <hr />
+        <ui:repeat value="#{postController.post.comments}" var="comment">
+            <div class="comment" style="border: 1px solid black;">
+                ${comment.author.userId}(${comment.score} points): ${comment.content}
+            </div>
+        </ui:repeat>
+    </ui:define>
+</ui:composition>
+
+</html>

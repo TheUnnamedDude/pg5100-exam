@@ -126,6 +126,17 @@
             with a exception you might not get to the post-integration-test goal and end up with wildfly still
             running in the background
         </p>
+        <h4>JaCoCo java-opts</h4>
+        <p>
+            Since the arquillian tests are running embedded in the wildfly container JaCoCo has no way to know
+            what lines are visited during the unit tests, by specifying the JaCoCo javaagent when running
+            wildfly JaCoCo is able to collect what lines of code got visited even though its running in a
+            seperate process. The way it looks for the java agent is by going to the folder of your local
+            maven repository and appending the path to the JaCoCo runtime the project depends on. The file
+            separator vars are so you don't have to write file.seperator in every place and because some
+            special operating systems have other file seperators then "/". The destfile makes sure it gets
+            appended to the right file so it can be analyzed after the tests.
+        </p>
     </div>
 </h:body>
 

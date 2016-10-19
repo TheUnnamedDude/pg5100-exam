@@ -36,6 +36,7 @@ public class CommentEJB {
         comment.setParent(post);
         comment.setCreated(new Date());
         comment.setScore(0L);
+        post.getComments().add(comment);
         user.getPosts().add(comment);
 
         em.persist(comment);

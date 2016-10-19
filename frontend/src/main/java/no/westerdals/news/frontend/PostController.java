@@ -2,6 +2,7 @@ package no.westerdals.news.frontend;
 
 import lombok.Getter;
 import lombok.Setter;
+import no.westerdals.news.ejb.CommentEJB;
 import no.westerdals.news.ejb.PostEJB;
 import no.westerdals.news.entities.Post;
 import no.westerdals.news.entities.Vote;
@@ -19,6 +20,9 @@ public class PostController {
     @EJB
     private PostEJB postEJB;
 
+    @EJB
+    private CommentEJB commentEJB;
+
     @Setter
     @Getter
     private String newPostContent;
@@ -26,6 +30,14 @@ public class PostController {
     @Getter
     @Setter
     private boolean orderByDate = false;
+
+    @Getter
+    @Setter
+    private Long displayedPostId;
+
+    public Post getPost() {
+        return postEJB.resolveFullPost(displayedPostId);
+    }
 
     public List<Post> getPosts() {
         List<Post> posts;
@@ -59,13 +71,20 @@ public class PostController {
         return "index.jsf";
     }
 
+    public String createComment() {
+        HttpSession session = SessionHelper.getSession(false);
+        if (session == null) {
+            return "show_post.jsf?postId=" + displayedPostId;
+        }
+        return "show_post.jsf?postId=" + displayedPostId;
+    }
+
     public String changeVote(Long postId, Long voteValue) {
         HttpSession session = SessionHelper.getSession(false);
         Post post = postEJB.findPost(postId);
         if (post == null || session == null) {
             return "index.jsf";
         }
-        System.out.println("Changing vote for " + post.getId());
 
         String userId = (String) session.getAttribute("userId");
         if (voteValue > 0) {

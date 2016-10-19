@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Created by IntelliJ IDEA.
-  User: kevin
-  Date: 10/17/16
-  Time: 4:34 PM
--->
 <!DOCTYPE html
         PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -69,7 +63,11 @@
                                             </h:link>
                                         </div>
                                         <div class="post-cropped-content">
-                                            Content: <span class="content-value">${postController.cropForFrontpage(post.content)}</span>
+                                            Content:
+                                            <h:link class="content-value" outcome="show_post.jsf" value="${postController.cropForFrontpage(post.content)}">
+                                                <f:param name="postId" value="${post.id}" />
+                                            </h:link>
+
                                         </div>
                                         <c:if test="#{authenticationController.user != null}">
                                             <div class="vote-selector">
