@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 
 public abstract class WebIntegrationTestBase {
     static WebDriver driver;
+    private final static boolean FIREFOX_ENABLED = false;
 
     public static boolean isUnix() {
         return !System.getProperty("os.name").startsWith("Windows");
@@ -33,7 +34,7 @@ public abstract class WebIntegrationTestBase {
 
     public static WebDriver findWebDriver() {
         Path path = findExecutable("geckodriver");
-        if (path != null) {
+        if (path != null && FIREFOX_ENABLED) {
             System.setProperty("webdriver.gecko.driver", path.toString());
             return new FirefoxDriver();
         }

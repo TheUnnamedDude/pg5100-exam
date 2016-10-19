@@ -59,17 +59,18 @@ public class PostController {
         return "index.jsf";
     }
 
-    public String changeVote(Post post) {
+    public String changeVote(Long postId, Long voteValue) {
         HttpSession session = SessionHelper.getSession(false);
+        Post post = postEJB.findPost(postId);
         if (post == null || session == null) {
             return "index.jsf";
         }
         System.out.println("Changing vote for " + post.getId());
 
         String userId = (String) session.getAttribute("userId");
-        if (post.getSelfVote() > 0) {
+        if (voteValue > 0) {
             postEJB.upvote(post.getId(), userId);
-        } else if (post.getSelfVote() < 0) {
+        } else if (voteValue < 0) {
             postEJB.downvote(post.getId(), userId);
         } else {
             postEJB.resetVote(post.getId(), userId);

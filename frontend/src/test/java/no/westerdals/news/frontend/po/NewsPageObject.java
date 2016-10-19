@@ -5,8 +5,8 @@ import no.westerdals.news.frontend.ExpectedResult;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 public class NewsPageObject extends BasePageObject {
@@ -82,13 +82,41 @@ public class NewsPageObject extends BasePageObject {
                 .findAny()
                 .orElse(null)
                 .findElement(By.className("vote-selector"))
-                .findElements(By.tagName("label"))
+                .findElements(By.tagName("input"))
                 .stream()
-                .filter(element -> element.getText().equals("Upvote"))
+                .filter(element -> element.getAttribute("value").equals("1"))
                 .findAny()
                 .orElse(null)
                 .click();
-        waitForPageToLoad();
+        waitForAjax();
+    }
+
+    public void clickDownvoteForPostWithContent(String expectedContent) {
+        getArticlesWithContent(expectedContent)
+                .findAny()
+                .orElse(null)
+                .findElement(By.className("vote-selector"))
+                .findElements(By.tagName("input"))
+                .stream()
+                .filter(element -> element.getAttribute("value").equals("-1"))
+                .findAny()
+                .orElse(null)
+                .click();
+        waitForAjax();
+    }
+
+    public void clickResetVoteForPostWithContent(String expectedContent) {
+        getArticlesWithContent(expectedContent)
+                .findAny()
+                .orElse(null)
+                .findElement(By.className("vote-selector"))
+                .findElements(By.tagName("input"))
+                .stream()
+                .filter(element -> element.getAttribute("value").equals("0"))
+                .findAny()
+                .orElse(null)
+                .click();
+        waitForAjax();
     }
 
     public int getUpvotesForPostWithContent(String expectedContent) {
@@ -101,5 +129,22 @@ public class NewsPageObject extends BasePageObject {
 
     public boolean canUpvotePosts() {
         return !driver.findElements(By.className("vote-selector")).isEmpty();
+    }
+
+    public void setOrdering(boolean byDate) {
+        Select select = new Select(driver.findElement(By.id("sorting-form:sorting")));
+        select.selectByValue(Boolean.toString(byDate));
+    }
+
+    public void clickUpdateOrdering() {
+        driver.findElement(By.id("sorting-form:update-sorting")).click();
+        waitForPageToLoad();
+    }
+
+    public int getUpvotesForFirstPostEntry() {
+        return Integer.parseInt(driver.findElements(By.className("post"))
+                .get(0)
+                .findElement(By.className("score"))
+                .getText());
     }
 }

@@ -73,7 +73,7 @@ public class PostEJB {
     }
 
     public List<Post> getHighestScoredPosts(int page) {
-        return getHighestScoredPosts(page * 20, 20);
+        return getHighestScoredPosts(page * 40, 40);
     }
 
     public List<Post> getHighestScoredPosts(int start, int results) {
@@ -84,7 +84,7 @@ public class PostEJB {
     }
 
     public List<Post> getNewestPosts(int page) {
-        return getNewestPosts(page * 20, 20);
+        return getNewestPosts(page * 40, 40);
     }
 
     public List<Post> getNewestPosts(int start, int results) {

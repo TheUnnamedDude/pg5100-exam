@@ -1,5 +1,6 @@
 package no.westerdals.news.frontend.po;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import no.westerdals.news.frontend.ExpectedResult;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -54,6 +55,18 @@ public abstract class BasePageObject {
         JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
         return wait.until((ExpectedCondition<Boolean>) input -> jsExecutor.executeScript("return document.readyState").equals("complete"));
     }
+
+    public void waitForAjax() {
+        // Ok I'm sorry. I really am, but atm its 03:46 and I didn't know ajax the ajax calls would fuck with running
+        // a update so I added this workaround to wait for the ajax call to complete, this is far from a optimal
+        // solution but I couldn't find a good way to wait for all ajax calls to be completed
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

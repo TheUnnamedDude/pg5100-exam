@@ -40,12 +40,12 @@
             <div id="news-container">
                 <h3 id="news-header">News</h3>
                 <br />
-                <h:form>
-                    <h:selectOneMenu value="#{postController.orderByDate}">
-                        <f:selectItem itemValue="true" itemLabel="Date" />
-                        <f:selectItem itemValue="false" itemLabel="Votes" />
+                <h:form id="sorting-form">
+                    <h:selectOneMenu id="sorting" value="#{postController.orderByDate}">
+                        <f:selectItem id="sort-by-date-item" itemValue="true" itemLabel="Date" />
+                        <f:selectItem id="sort-by-votes-item" itemValue="false" itemLabel="Votes" />
                     </h:selectOneMenu>
-                    <h:commandButton action="#{postController.refresh()}" value="Update results" />
+                    <h:commandButton id="update-sorting" action="#{postController.refresh()}" value="Update results" />
                 </h:form>
                 <c:choose>
                     <c:when test="${empty postController.posts}">
@@ -78,10 +78,10 @@
                                                         <f:selectItem itemValue="-1" itemLabel="Downvote" />
                                                         <f:selectItem itemValue="0" itemLabel="No vote" />
                                                         <f:selectItem itemValue="1" itemLabel="Upvote" />
-                                                        <f:ajax execute="@form" listener="#{postController.changeVote(post)}" render="score-${post.id}" />
+                                                        <f:ajax execute="@form" listener="#{postController.changeVote(post.id, post.selfVote)}" render="score-${post.id}" />
                                                     </h:selectOneRadio>
                                                     <noscript> <!-- Lets be nice to noscript users -->
-                                                        <h:commandButton action="#{postController.changeVote(post)}" />
+                                                        <h:commandButton action="#{postController.changeVote(post.id, post.selfVote)}" />
                                                     </noscript>
                                                 </h:form>
                                             </div>
