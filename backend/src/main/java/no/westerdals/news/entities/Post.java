@@ -13,11 +13,11 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(
                 name = Post.GET_ORDERED_BY_TIME,
-                query = "select p from Post as p order by p.created desc"
+                query = "select p from Post as p where type(p) <> Comment order by p.created desc"
         ),
         @NamedQuery(
                 name = Post.GET_ORDERED_BY_SCORE,
-                query = "select p from Post as p order by p.score desc"
+                query = "select p from Post as p where type(p) <> Comment order by p.score desc"
         ),
 })
 @Getter

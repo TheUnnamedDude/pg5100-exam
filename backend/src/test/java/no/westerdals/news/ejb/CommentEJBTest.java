@@ -20,4 +20,13 @@ public class CommentEJBTest extends BaseEJBTest {
         assertNotNull(comment.getId());
         assertFalse(comment.isModerated());
     }
+
+    @Test
+    public void testCommentIsNotAPost() throws Exception {
+        User user = createUser("CommentIsNotAPost");
+        Post post = postEJB.createPost(user.getUserId(), "Post!");
+        Comment comment = commentEJB.createComment(post.getId(), user.getUserId(), "UniqueComment" + System.currentTimeMillis());
+
+        assertEquals(0, postEJB.getHighestScoredPosts(0).stream().filter(p -> p.getContent().equals(comment.getContent())).count());
+    }
 }
